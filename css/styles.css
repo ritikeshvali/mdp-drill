@@ -1,8 +1,8 @@
 /* ============================================================================
  *  MDP FRAMING DRILL — STYLES
  *  All theming lives in the :root tokens below. Change a color once here and
- *  it updates everywhere. Dark theme is the default; a light theme is provided
- *  under prefers-color-scheme and can be forced with <html data-theme="light">.
+ *  it updates everywhere. Dark is default; light applies via prefers-color-scheme
+ *  and can be forced with <html data-theme="light"> (or "dark").
  * ========================================================================== */
 
 :root {
@@ -10,7 +10,6 @@
   padding-top: env(safe-area-inset-top, 0px);
   padding-bottom: env(safe-area-inset-bottom, 0px);
 
-  /* --- surfaces & text --- */
   --bg: #0e1116;
   --panel: #161b22;
   --panel-2: #1c232d;
@@ -19,11 +18,9 @@
   --ink-dim: #9aa7b5;
   --ink-faint: #6b7787;
 
-  /* --- accent --- */
   --accent: #5ee0b6;
   --accent-ink: #0e1116;
 
-  /* --- the six MDP component colors (used for tags & pills) --- */
   --state: #7aa2ff;
   --action: #f6b26b;
   --reward: #5ee0b6;
@@ -31,13 +28,11 @@
   --disc: #ff8fa3;
   --trap: #ff6b6b;
 
-  /* --- fonts --- */
-  --font-d: "Space Grotesk", system-ui, sans-serif;   /* display / headings */
-  --font-b: "IBM Plex Sans", system-ui, sans-serif;   /* body */
-  --font-m: "IBM Plex Mono", ui-monospace, monospace; /* labels / mono */
+  --font-d: "Space Grotesk", system-ui, sans-serif;
+  --font-b: "IBM Plex Sans", system-ui, sans-serif;
+  --font-m: "IBM Plex Mono", ui-monospace, monospace;
 }
 
-/* Light theme: applied by OS preference, unless an explicit dark is forced. */
 @media (prefers-color-scheme: light) {
   :root:not([data-theme="dark"]) {
     --bg: #f5f6f3; --panel: #ffffff; --panel-2: #f0f2ee; --line: #e0e2dc;
@@ -47,7 +42,6 @@
     --trans: #7d43c9; --disc: #c93a55; --trap: #c0392b;
   }
 }
-/* Force light regardless of OS with <html data-theme="light">. */
 :root[data-theme="light"] {
   --bg: #f5f6f3; --panel: #ffffff; --panel-2: #f0f2ee; --line: #e0e2dc;
   --ink: #1a1f26; --ink-dim: #55606d; --ink-faint: #8b95a1;
@@ -96,29 +90,32 @@ h1 { font-family: var(--font-d); font-weight: 600; font-size: 30px; line-height:
 .filters { display: flex; gap: 8px; flex-wrap: wrap; margin: 28px 0 16px; position: sticky; top: 0; background: var(--bg); padding: 10px 0; z-index: 5; }
 .chip { font-family: var(--font-m); font-size: 12.5px; padding: 6px 12px; border-radius: 8px; border: 1px solid var(--line); background: var(--panel); color: var(--ink-dim); cursor: pointer; }
 .chip[aria-pressed="true"] { background: var(--accent); color: var(--accent-ink); border-color: var(--accent); font-weight: 500; }
+.chip.review-chip[aria-pressed="true"] { background: var(--trap); border-color: var(--trap); color: #fff; }
 .filter-group { display: flex; gap: 8px; flex-wrap: wrap; align-items: center; }
 .filter-sep { width: 1px; align-self: stretch; background: var(--line); margin: 2px 4px; }
 
 /* --- problem cards --- */
 .card { background: var(--panel); border: 1px solid var(--line); border-radius: 14px; padding: 20px 22px; margin: 14px 0; }
 .card.done { border-color: color-mix(in srgb, var(--accent) 45%, var(--line)); }
+.card.needs-review { border-color: color-mix(in srgb, var(--trap) 45%, var(--line)); }
 .card-top { display: flex; justify-content: space-between; align-items: flex-start; gap: 12px; margin-bottom: 10px; }
 .qnum { font-family: var(--font-m); font-size: 12px; color: var(--ink-faint); }
-.meta { display: flex; gap: 7px; flex-wrap: wrap; }
+.meta { display: flex; gap: 7px; flex-wrap: wrap; align-items: center; }
 .pill { font-family: var(--font-m); font-size: 11px; padding: 2px 8px; border-radius: 6px; border: 1px solid var(--line); color: var(--ink-dim); }
 .pill.diff-1 { color: var(--reward); border-color: color-mix(in srgb, var(--reward) 40%, var(--line)); }
 .pill.diff-2 { color: var(--action); border-color: color-mix(in srgb, var(--action) 40%, var(--line)); }
 .pill.diff-3 { color: var(--disc);   border-color: color-mix(in srgb, var(--disc) 40%, var(--line)); }
+.pill.miss-badge { color: var(--trap); border-color: color-mix(in srgb, var(--trap) 45%, var(--line)); background: color-mix(in srgb, var(--trap) 12%, transparent); }
 .scenario { font-size: 16px; margin: 2px 0 16px; }
 .scenario .q { font-family: var(--font-d); font-weight: 500; font-size: 18px; display: block; margin-bottom: 6px; }
 
 /* --- buttons --- */
 .btns { display: flex; gap: 10px; flex-wrap: wrap; align-items: center; }
-.reveal-btn { font-family: var(--font-m); font-size: 13.5px; padding: 9px 16px; border-radius: 9px; border: none; background: var(--accent); color: var(--accent-ink); cursor: pointer; font-weight: 500; }
-.reveal-btn:hover { filter: brightness(1.05); }
-.ctx-btn { font-family: var(--font-m); font-size: 13.5px; padding: 9px 16px; border-radius: 9px; border: 1px solid var(--line); background: var(--panel-2); color: var(--ink-dim); cursor: pointer; }
-.ctx-btn:hover { color: var(--ink); border-color: var(--ink-faint); }
-.ctx-btn.hide { display: none; }
+.btn { font-family: var(--font-m); font-size: 13.5px; padding: 9px 16px; border-radius: 9px; cursor: pointer; border: 1px solid var(--line); background: var(--panel-2); color: var(--ink-dim); }
+.btn:hover { color: var(--ink); border-color: var(--ink-faint); }
+.btn-primary { background: var(--accent); color: var(--accent-ink); border: none; font-weight: 500; }
+.btn-primary:hover { filter: brightness(1.05); color: var(--accent-ink); }
+.btn[aria-expanded="true"] { color: var(--ink); border-color: var(--ink-faint); }
 
 /* --- context panel --- */
 .context { display: none; margin-top: 16px; padding: 14px 16px; border-radius: 11px; background: var(--panel-2); border: 1px solid var(--line); border-left: 3px solid var(--trans); }
@@ -126,8 +123,24 @@ h1 { font-family: var(--font-d); font-weight: 600; font-size: 30px; line-height:
 .context .clabel { font-family: var(--font-m); font-size: 11px; letter-spacing: .04em; color: var(--trans); text-transform: uppercase; margin: 0 0 6px; }
 .context .cbody { font-size: 14.5px; color: var(--ink-dim); }
 
+/* --- voice capture --- */
+.voice { margin-top: 16px; }
+.voice-row { display: flex; gap: 10px; align-items: center; flex-wrap: wrap; }
+.mic-btn { display: inline-flex; align-items: center; gap: 8px; font-family: var(--font-m); font-size: 13.5px; padding: 9px 16px; border-radius: 9px; border: 1px solid var(--line); background: var(--panel-2); color: var(--ink-dim); cursor: pointer; }
+.mic-btn:hover { color: var(--ink); border-color: var(--ink-faint); }
+.mic-btn .dot { width: 9px; height: 9px; border-radius: 50%; background: var(--ink-faint); flex-shrink: 0; }
+.mic-btn.recording { color: var(--trap); border-color: var(--trap); }
+.mic-btn.recording .dot { background: var(--trap); animation: pulse 1.1s infinite; }
+@keyframes pulse { 0%,100% { opacity: 1; } 50% { opacity: .25; } }
+.mic-hint { font-family: var(--font-m); font-size: 12px; color: var(--ink-faint); }
+.transcript { display: none; margin-top: 12px; }
+.transcript.show { display: block; }
+.transcript label { font-family: var(--font-m); font-size: 11px; letter-spacing: .04em; text-transform: uppercase; color: var(--ink-faint); display: block; margin-bottom: 6px; }
+.transcript textarea, .notes textarea { width: 100%; min-height: 84px; resize: vertical; background: var(--panel-2); color: var(--ink); border: 1px solid var(--line); border-radius: 10px; padding: 12px 14px; font-family: var(--font-b); font-size: 14.5px; line-height: 1.5; }
+.transcript textarea:focus, .notes textarea:focus { outline: none; border-color: var(--accent); }
+
 /* --- self-rating --- */
-.rate { display: none; gap: 8px; align-items: center; }
+.rate { display: none; gap: 8px; align-items: center; flex-wrap: wrap; }
 .rate.show { display: flex; }
 .rate span { font-size: 13px; color: var(--ink-faint); font-family: var(--font-m); }
 .rate button { font-family: var(--font-m); font-size: 12.5px; padding: 7px 12px; border-radius: 8px; border: 1px solid var(--line); background: var(--panel-2); color: var(--ink-dim); cursor: pointer; }
@@ -142,8 +155,56 @@ h1 { font-family: var(--font-d); font-weight: 600; font-size: 30px; line-height:
 .a-row .body { font-size: 14.5px; }
 .a-row .body b { font-weight: 500; color: var(--ink); }
 
+/* --- notes --- */
+.notes { display: none; margin-top: 16px; }
+.notes.show { display: block; }
+.notes .nhead { display: flex; align-items: center; justify-content: space-between; gap: 10px; margin-bottom: 6px; }
+.notes label { font-family: var(--font-m); font-size: 11px; letter-spacing: .04em; text-transform: uppercase; color: var(--ink-faint); }
+.notes .saved { font-family: var(--font-m); font-size: 11px; color: var(--reward); opacity: 0; transition: opacity .2s; }
+.notes .saved.show { opacity: 1; }
+
 /* --- empty state --- */
 .empty { text-align: center; color: var(--ink-faint); font-family: var(--font-m); font-size: 14px; padding: 40px 0; }
 
 footer { margin-top: 50px; color: var(--ink-faint); font-size: 13px; font-family: var(--font-m); text-align: center; }
 footer a { color: var(--ink-dim); }
+
+/* ============================================================================
+ *  RESPONSIVE
+ * ========================================================================== */
+
+/* Tablets */
+@media (max-width: 720px) {
+  .filter-sep { display: none; }
+  .filters { gap: 6px; }
+}
+
+/* Phones */
+@media (max-width: 560px) {
+  body { font-size: 15.5px; }
+  .wrap { padding: 0 14px 64px; }
+  header { padding: 28px 0 12px; }
+  h1 { font-size: 25px; }
+  .lede { font-size: 15px; }
+
+  .checklist { padding: 16px; }
+  .comp-row { flex-direction: column; gap: 4px; }
+  .tag { min-width: 0; }
+
+  /* filters scroll horizontally instead of wrapping into a tall block */
+  .filters { flex-wrap: nowrap; overflow-x: auto; -webkit-overflow-scrolling: touch; padding-bottom: 12px; scrollbar-width: none; }
+  .filters::-webkit-scrollbar { display: none; }
+  .filter-group { flex-wrap: nowrap; }
+  .chip { white-space: nowrap; }
+
+  .card { padding: 16px; }
+  .card-top { flex-direction: column-reverse; align-items: flex-start; gap: 8px; }
+  .scenario .q { font-size: 17px; }
+
+  /* full-width, thumb-friendly buttons */
+  .btns { gap: 8px; }
+  .btn, .btn-primary, .mic-btn { flex: 1 1 100%; justify-content: center; text-align: center; padding: 11px 16px; }
+  .rate { width: 100%; }
+  .rate button { flex: 1; }
+  .a-row { flex-direction: column; gap: 4px; }
+}

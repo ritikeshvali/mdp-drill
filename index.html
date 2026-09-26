@@ -6,7 +6,6 @@
   <title>MDP Framing Drill</title>
   <meta name="description" content="Practice framing real-world problems as Markov Decision Processes: state, action, reward, transition, discount, and the trap an examiner is testing.">
 
-  <!-- Fonts (the only external resource; everything else is local) -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
@@ -16,13 +15,14 @@
 <body>
   <div class="wrap">
     <header>
-      <p class="kicker">reinforcement learning · viva prep</p>
+      <p class="kicker">reinforcement learning</p>
       <h1>MDP Framing Drill</h1>
-      <p class="lede">For each scenario, frame the RL problem as an MDP before revealing the model answer. Say each component out loud like you would in a viva. The trap line is what an examiner is really testing.</p>
+      <p class="lede">For each scenario, frame the RL problem as an MDP before revealing the model answer. Name each component out loud (or record it), then reveal and compare. The trap line is the mistake most people make.</p>
 
       <div class="progress">
         <div class="bar"><div class="bar-fill" id="barFill"></div></div>
         <span class="pcount" id="pcount">0 / 0 attempted</span>
+        <button class="reset" id="exportBtn">export answers</button>
         <button class="reset" id="resetBtn">reset progress</button>
       </div>
     </header>
@@ -43,7 +43,7 @@
     <!-- Problem cards are rendered here -->
     <div id="cards"></div>
 
-    <footer>attempt first, reveal second. progress saves in this browser only. &middot; <a href="https://github.com/ritikeshvali" rel="noopener">source</a></footer>
+    <footer>attempt first, reveal second. progress saves in this browser only. &middot; <a href="https://github.com/ritikeshvali/mdp-drill" rel="noopener">source</a></footer>
   </div>
 
   <!-- Data first, then the app that consumes it -->
