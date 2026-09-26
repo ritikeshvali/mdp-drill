@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>MDP Framing Drill</title>
+  <meta name="description" content="Practice framing real-world problems as Markov Decision Processes: state, action, reward, transition, discount, and the trap an examiner is testing.">
+
+  <!-- Fonts (the only external resource; everything else is local) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+  <div class="wrap">
+    <header>
+      <p class="kicker">reinforcement learning · viva prep</p>
+      <h1>MDP Framing Drill</h1>
+      <p class="lede">For each scenario, frame the RL problem as an MDP before revealing the model answer. Say each component out loud like you would in a viva. The trap line is what an examiner is really testing.</p>
+
+      <div class="progress">
+        <div class="bar"><div class="bar-fill" id="barFill"></div></div>
+        <span class="pcount" id="pcount">0 / 0 attempted</span>
+        <button class="reset" id="resetBtn">reset progress</button>
+      </div>
+    </header>
+
+    <div class="checklist">
+      <h2>The 6 things to name, every time</h2>
+      <div class="comp-row"><span class="tag t-state">state</span><span class="desc">All info the agent needs to decide, made approximately Markov. Ask: what does the agent see?</span></div>
+      <div class="comp-row"><span class="tag t-action">action</span><span class="desc">What the <b>agent</b> chooses, not what the environment/user does. Ask: who is the agent, and what can it do?</span></div>
+      <div class="comp-row"><span class="tag t-reward">reward</span><span class="desc">Scalar signal encoding the goal. Watch for reward hacking and short vs long term.</span></div>
+      <div class="comp-row"><span class="tag t-trans">transition</span><span class="desc">P(s' | s, a). Usually unknown &rarr; model-free RL. Say whether it's known.</span></div>
+      <div class="comp-row"><span class="tag t-disc">discount / horizon</span><span class="desc">Episodic or continuing? What does &gamma; encode here (greedy vs long-term)?</span></div>
+      <div class="comp-row"><span class="tag t-trap">the trap</span><span class="desc">The one conceptual error that separates a weak answer from a strong one.</span></div>
+    </div>
+
+    <!-- Filter chips are generated from the data by js/app.js -->
+    <div class="filters" id="filters"></div>
+
+    <!-- Problem cards are rendered here -->
+    <div id="cards"></div>
+
+    <footer>attempt first, reveal second. progress saves in this browser only. &middot; <a href="https://github.com/ritikeshvali" rel="noopener">source</a></footer>
+  </div>
+
+  <!-- Data first, then the app that consumes it -->
+  <script src="data/problems.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>
