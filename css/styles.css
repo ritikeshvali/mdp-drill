@@ -208,3 +208,71 @@ footer a { color: var(--ink-dim); }
   .rate button { flex: 1; }
   .a-row { flex-direction: column; gap: 4px; }
 }
+
+/* ============================================================================
+ *  TABS + LEARN
+ * ========================================================================== */
+
+.tabs { display: flex; gap: 6px; margin: 24px 0 8px; border-bottom: 1px solid var(--line); }
+.tab { font-family: var(--font-m); font-size: 14px; padding: 10px 18px; border: none; background: none; color: var(--ink-faint); cursor: pointer; border-bottom: 2px solid transparent; margin-bottom: -1px; }
+.tab:hover { color: var(--ink-dim); }
+.tab[aria-selected="true"] { color: var(--ink); border-bottom-color: var(--accent); font-weight: 500; }
+
+.panel { display: none; }
+.panel.show { display: block; }
+
+/* --- learn cards --- */
+.lcard { background: var(--panel); border: 1px solid var(--line); border-radius: 14px; padding: 22px 24px; margin: 16px 0; }
+.lstep { font-family: var(--font-m); font-size: 11.5px; letter-spacing: .04em; text-transform: uppercase; color: var(--accent); }
+.lcard h2 { font-family: var(--font-d); font-weight: 600; font-size: 21px; margin: 8px 0 12px; letter-spacing: -.01em; }
+.lcard p { color: var(--ink-dim); margin: 0 0 12px; font-size: 15.5px; }
+.lcard p:last-child { margin-bottom: 0; }
+.lcard p b { color: var(--ink); font-weight: 500; }
+.lcard .lsub { font-size: 14px; color: var(--ink-faint); }
+.lnote { border-left: 3px solid var(--line); padding: 2px 0 2px 14px; color: var(--ink-dim); font-size: 14.5px; }
+.lcard .tag { display: inline-block; margin-right: 6px; }
+
+/* --- diagram (theme-aware; colors from tokens) --- */
+.diagram { margin: 8px 0 16px; }
+.diagram svg { width: 100%; height: auto; display: block; }
+.dg-bg { fill: var(--panel-2); stroke: var(--line); stroke-width: 1; }
+.dg-h { fill: var(--ink); font-size: 21px; font-weight: 600; }
+.dg-dim { fill: var(--ink-dim); font-size: 13px; }
+.dg-dim2 { fill: var(--ink-dim); font-size: 12.5px; }
+.dg-faint { fill: var(--ink-faint); font-size: 12px; }
+.dg-box { fill: var(--panel); stroke-width: 1.5; }
+.dg-box-agent { stroke: var(--accent); }
+.dg-box-env { stroke: var(--state); }
+.dg-agent { fill: var(--accent); font-size: 19px; font-weight: 600; }
+.dg-env { fill: var(--state); font-size: 19px; font-weight: 600; }
+.dg-action { fill: var(--action); font-size: 14.5px; font-weight: 600; }
+.dg-state { fill: var(--state); font-size: 14.5px; font-weight: 600; }
+.dg-arrow-action { stroke: var(--action); stroke-width: 2.5; }
+.dg-arrow-state { stroke: var(--state); stroke-width: 2.5; }
+.mk-action { fill: var(--action); }
+.mk-state { fill: var(--state); }
+
+/* --- learn component blocks (card 5) --- */
+.learn-comp { border-top: 1px solid var(--line); padding: 16px 0; }
+.learn-comp:first-of-type { border-top: none; }
+.lc-head { display: flex; gap: 10px; align-items: baseline; font-size: 15.5px; color: var(--ink); margin-bottom: 6px; flex-wrap: wrap; }
+.lc-head .tag { flex-shrink: 0; }
+.lc-precise { font-size: 14.5px; color: var(--ink-dim); margin: 0 0 10px; }
+.ex-toggle { display: inline-flex; gap: 0; border: 1px solid var(--line); border-radius: 8px; overflow: hidden; margin-bottom: 10px; }
+.ex-btn { font-family: var(--font-m); font-size: 12px; padding: 5px 12px; border: none; background: var(--panel-2); color: var(--ink-dim); cursor: pointer; }
+.ex-btn + .ex-btn { border-left: 1px solid var(--line); }
+.ex-btn[aria-pressed="true"] { background: var(--accent); color: var(--accent-ink); font-weight: 500; }
+.ex { display: none; font-size: 14.5px; color: var(--ink-dim); margin: 0; padding: 12px 14px; background: var(--panel-2); border-radius: 10px; }
+.ex.show { display: block; }
+
+#toDrill { margin-top: 6px; }
+#learnLink { color: var(--accent); }
+
+/* --- learn on phones --- */
+@media (max-width: 560px) {
+  .lcard { padding: 18px 16px; }
+  .lcard h2 { font-size: 19px; }
+  .lcard p { font-size: 15px; }
+  .tab { padding: 10px 14px; font-size: 13.5px; }
+  #toDrill { width: 100%; }
+}

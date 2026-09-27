@@ -4,50 +4,188 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
   <title>MDP Framing Drill</title>
-  <meta name="description" content="Practice framing real-world problems as Markov Decision Processes: state, action, reward, transition, discount, and the trap an examiner is testing.">
+  <meta name="description" content="Learn what a Markov Decision Process is and practice framing real-world problems as one: state, action, reward, transition, discount, and the trap an examiner is testing.">
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
 
-  <link rel="stylesheet" href="css/styles.css">
+  <link rel="stylesheet" href="css/styles.css?v=3">
 </head>
 <body>
   <div class="wrap">
     <header>
       <p class="kicker">reinforcement learning</p>
       <h1>MDP Framing Drill</h1>
-      <p class="lede">For each scenario, frame the RL problem as an MDP before revealing the model answer. Name each component out loud (or record it), then reveal and compare. The trap line is the mistake most people make.</p>
+      <p class="lede">Build a gut feel for reinforcement learning by learning what a Markov Decision Process is, then practising how to frame real problems as one.</p>
+    </header>
 
+    <div class="tabs" role="tablist">
+      <button class="tab" data-tab="learn" role="tab">Learn</button>
+      <button class="tab" data-tab="drill" role="tab">Drill</button>
+    </div>
+
+    <!-- ==================== LEARN ==================== -->
+    <section id="learn" class="panel">
+
+      <article class="lcard">
+        <span class="lstep">1 · the problem</span>
+        <h2>Why reinforcement learning exists</h2>
+        <p>Some problems have no answer key. In ordinary machine learning you copy labelled examples ("this photo is a cat"). In reinforcement learning (RL) you learn from <b>consequences</b>, by trying things and seeing what pays off. It is built for <b>sequential decisions under uncertainty with delayed reward</b>.</p>
+        <p class="lnote"><b>Delayed reward:</b> the payoff for a good decision often arrives many steps later, not right away, so you cannot judge a move by its immediate result. In chess you sacrifice a piece now to win twenty moves later.</p>
+      </article>
+
+      <article class="lcard">
+        <span class="lstep">2 · the loop</span>
+        <h2>The agent and the environment</h2>
+        <p>Two players pass signals back and forth:</p>
+        <p><span class="tag t-reward">agent</span> the learner we are training, the thing that makes decisions.<br>
+           <span class="tag t-state">environment</span> everything outside the agent that it acts on and that reacts back.</p>
+        <div class="diagram">
+          <svg viewBox="0 0 760 380" role="img" aria-label="The reinforcement learning loop: the agent takes an action, the environment returns a reward and the next state, repeat.">
+            <rect class="dg-bg" x="1" y="1" width="758" height="378" rx="16"/>
+            <text class="dg-h" x="380" y="42" text-anchor="middle">The reinforcement learning loop</text>
+            <text class="dg-dim" x="380" y="66" text-anchor="middle">one step of decision → consequence, repeated over and over</text>
+
+            <text class="dg-action" x="380" y="112" text-anchor="middle">action  a&#8348;</text>
+            <text class="dg-dim2" x="380" y="130" text-anchor="middle">what the agent chooses to do</text>
+
+            <rect class="dg-box dg-box-agent" x="70" y="160" width="200" height="96" rx="14"/>
+            <text class="dg-agent" x="170" y="202" text-anchor="middle">AGENT</text>
+            <text class="dg-dim2" x="170" y="227" text-anchor="middle">the learner we're training</text>
+
+            <rect class="dg-box dg-box-env" x="490" y="160" width="200" height="96" rx="14"/>
+            <text class="dg-env" x="590" y="202" text-anchor="middle">ENVIRONMENT</text>
+            <text class="dg-dim2" x="590" y="227" text-anchor="middle">everything it acts on</text>
+
+            <defs>
+              <marker id="ag" markerWidth="11" markerHeight="11" refX="8" refY="4" orient="auto"><path class="mk-action" d="M0,0 L8,4 L0,8 z"/></marker>
+              <marker id="bl" markerWidth="11" markerHeight="11" refX="8" refY="4" orient="auto"><path class="mk-state" d="M0,0 L8,4 L0,8 z"/></marker>
+            </defs>
+            <path class="dg-arrow-action" d="M272,188 C360,150 400,150 488,188" fill="none" marker-end="url(#ag)"/>
+            <path class="dg-arrow-state" d="M488,228 C400,266 360,266 272,228" fill="none" marker-end="url(#bl)"/>
+
+            <text class="dg-state" x="380" y="300" text-anchor="middle">reward  r&#8348;&#8330;&#8321;    +    next state  s&#8348;&#8330;&#8321;</text>
+            <text class="dg-dim2" x="380" y="318" text-anchor="middle">how good that was, and the new situation</text>
+            <text class="dg-faint" x="380" y="356" text-anchor="middle">The agent picks an action; the environment answers with a reward and the next state; repeat until the task ends.</text>
+          </svg>
+        </div>
+        <p>The agent observes a <b>state</b>, picks an <b>action</b>, and the environment answers with a <b>reward</b> and the <b>next state</b>. Repeat until the task ends. That is the whole idea.</p>
+      </article>
+
+      <article class="lcard">
+        <span class="lstep">3 · the definition</span>
+        <h2>What an MDP is</h2>
+        <p>A <b>Markov Decision Process (MDP)</b> is the formal name for that loop: a five-piece description &mdash; states, actions, transitions, rewards, and a discount &mdash; that turns a fuzzy goal ("play well") into a problem you can actually solve with math. Almost every RL algorithm is, underneath, solving an MDP.</p>
+      </article>
+
+      <article class="lcard">
+        <span class="lstep">4 · the "M"</span>
+        <h2>The Markov property</h2>
+        <p>The future depends only on the <b>present state</b>, not the whole history that led there. So the state must be a <b>sufficient summary</b> of the past: once you know it, remembering how you got there adds nothing.</p>
+        <p class="lnote">A chess board is Markov &mdash; the current position tells you everything the legal moves depend on. Your position alone in a game with a moving ball is <b>not</b> &mdash; you would also need the ball's velocity to know what happens next.</p>
+      </article>
+
+      <article class="lcard">
+        <span class="lstep">5 · the checklist</span>
+        <h2>The 6 things to name, every time</h2>
+        <p class="lsub">Each has two worked examples. Toggle between a simple one (a robot on a grid reaching its charging dock) and a real one (an app choosing your next Instagram Reel).</p>
+
+        <div class="learn-comp">
+          <div class="lc-head"><span class="tag t-state">state</span><span>the complete snapshot the agent uses to decide right now</span></div>
+          <p class="lc-precise"><b>Precisely:</b> one point in the space of possible situations; it must be a sufficient (Markov) summary of the past.</p>
+          <div class="ex-toggle"><button class="ex-btn" data-ex="grid" aria-pressed="true">grid robot</button><button class="ex-btn" data-ex="reels" aria-pressed="false">Reels</button></div>
+          <p class="ex ex-grid show">In the grid game where the robot must reach its dock, the state is the cell it currently occupies. That's all it needs to choose its next move; it doesn't need the path it took.</p>
+          <p class="ex ex-reels">The app's picture of you at this moment: which reels you just watched fully, which you skipped, what you liked recently, plus features of the reel on screen.</p>
+        </div>
+
+        <div class="learn-comp">
+          <div class="lc-head"><span class="tag t-action">action</span><span>a choice the <b>agent</b> makes &mdash; what it does, not what happens to it</span></div>
+          <p class="lc-precise"><b>Precisely:</b> one element of the set of actions available in the current state.</p>
+          <div class="ex-toggle"><button class="ex-btn" data-ex="grid" aria-pressed="true">grid robot</button><button class="ex-btn" data-ex="reels" aria-pressed="false">Reels</button></div>
+          <p class="ex ex-grid show">Move up, down, left, or right. A gust of wind shoving the robot is not an action &mdash; that's the environment acting.</p>
+          <p class="ex ex-reels">Which reel to show you next (picked from a shortlist). Your like or skip is not the agent's action &mdash; it's your reaction, which becomes reward.</p>
+        </div>
+
+        <div class="learn-comp">
+          <div class="lc-head"><span class="tag t-reward">reward</span><span>one number the environment returns after each move, saying how good that move's immediate outcome was</span></div>
+          <p class="lc-precise"><b>Precisely:</b> a scalar (a single number). You maximize its cumulative sum over time, never any one step. It is the only signal of what you want.</p>
+          <div class="ex-toggle"><button class="ex-btn" data-ex="grid" aria-pressed="true">grid robot</button><button class="ex-btn" data-ex="reels" aria-pressed="false">Reels</button></div>
+          <p class="ex ex-grid show">+10 for reaching the dock, &minus;1 for every step taken (to push for speed), &minus;100 for falling down the stairs.</p>
+          <p class="ex ex-reels">+ for watch time and a like or share, &minus; for a fast skip or a "not interested".</p>
+        </div>
+
+        <div class="learn-comp">
+          <div class="lc-head"><span class="tag t-trans">transition</span><span>the rule for what happens next &mdash; given where you are and what you do, which state do you land in? Often random.</span></div>
+          <p class="lc-precise"><b>Precisely:</b> P(s&prime; | s, a), read as "the probability of landing in next state s&prime;, given that you are in state s and take action a".</p>
+          <div class="ex-toggle"><button class="ex-btn" data-ex="grid" aria-pressed="true">grid robot</button><button class="ex-btn" data-ex="reels" aria-pressed="false">Reels</button></div>
+          <p class="ex ex-grid show">"Move right" lands you one cell right 90% of the time, but on a slippery floor 10% of the time you slip down. Not knowing these odds in advance is what forces you to learn by trying (model-free RL).</p>
+          <p class="ex ex-reels">After a reel is shown, which state you move to depends on how you react, which the app can't predict for sure, so it's learned from data.</p>
+        </div>
+
+        <div class="learn-comp">
+          <div class="lc-head"><span class="tag t-disc">discount / horizon</span><span>how much you value future reward versus immediate, and whether the task ever ends</span></div>
+          <p class="lc-precise"><b>Precisely:</b> a discount &gamma; between 0 and 1. Return = r&#8321; + &gamma;r&#8322; + &gamma;&sup2;r&#8323; + &hellip; Near 0 = short-sighted; near 1 = far-sighted. <i>Episodic</i> tasks have a natural end (a game); <i>continuing</i> tasks run forever (a thermostat).</p>
+          <div class="ex-toggle"><button class="ex-btn" data-ex="grid" aria-pressed="true">grid robot</button><button class="ex-btn" data-ex="reels" aria-pressed="false">Reels</button></div>
+          <p class="ex ex-grid show">At &gamma; = 0.9, a reward 10 steps away is worth about 0.9&sup1;&#8304; &asymp; 0.35 of the same reward now, so reaching the dock in 3 steps beats reaching it in 30.</p>
+          <p class="ex ex-reels">A session is an episode. A high &gamma; optimizes for you staying engaged over the whole session, not just the next three seconds &mdash; a low &gamma; breeds clickbait.</p>
+        </div>
+
+        <div class="learn-comp">
+          <div class="lc-head"><span class="tag t-trap">the trap</span><span>not a component &mdash; a practice aid</span></div>
+          <p class="lc-precise">The one mistake an examiner is really probing. Usually it's confusing <b>who the agent is</b> (the agent's action versus the user's or environment's reaction), or proposing a state that isn't actually Markov. The drill flags the specific trap on each scenario.</p>
+        </div>
+      </article>
+
+      <article class="lcard">
+        <span class="lstep">6 · what you solve for</span>
+        <h2>Policy, return, value</h2>
+        <p><b>Policy (&pi;)</b> &mdash; the agent's strategy: a rule that says, given the state you're in, which action to take. It's the actual "brain" you end up with.</p>
+        <p><b>Return</b> &mdash; the total reward from now to the end, with later rewards discounted by &gamma;. It's what you truly want to maximize, not the next reward &mdash; which is exactly what makes delayed reward tractable.</p>
+        <p><b>Value</b> &mdash; the expected return if you start in a given state and follow your policy: "how good is it to be here, counting all the future reward I can expect, not just what's in front of me." This is the quantity nearly every RL algorithm is really estimating &mdash; get the values right and a good policy falls out (act toward the higher-value states).</p>
+        <p><b>Optimal policy</b> &mdash; the strategy that achieves the highest expected return from every state. Solving an MDP means finding it.</p>
+      </article>
+
+      <article class="lcard">
+        <span class="lstep">7 · how they're solved</span>
+        <h2>The beginner algorithm map</h2>
+        <p><b>Know the rules</b> (the transitions and rewards)? Then you can <i>plan</i>: <b>Value Iteration</b> and <b>Policy Iteration</b> compute the answer directly.</p>
+        <p><b>Don't know the rules?</b> Then you <i>learn from experience</i>: <b>Q-learning</b> (off-policy &mdash; learns the best policy no matter how it explores) and <b>SARSA</b> (on-policy &mdash; learns the policy it actually follows).</p>
+        <p><b>Too many states to list in a table?</b> Approximate the value with a neural net &rarr; <b>Deep Q-Network (DQN)</b>, the bridge to deep RL.</p>
+        <p class="lnote">Where this leads next (not needed yet): a second family, policy gradients and PPO, plus their LLM cousins like GRPO and DPO used in RLHF. Left out on purpose so the value-based story stays clean.</p>
+        <button class="btn btn-primary" id="toDrill">start the drill →</button>
+      </article>
+
+    </section>
+
+    <!-- ==================== DRILL ==================== -->
+    <section id="drill" class="panel">
       <div class="progress">
         <div class="bar"><div class="bar-fill" id="barFill"></div></div>
         <span class="pcount" id="pcount">0 / 0 attempted</span>
         <button class="reset" id="exportBtn">export answers</button>
         <button class="reset" id="resetBtn">reset progress</button>
       </div>
-    </header>
 
-    <div class="checklist">
-      <h2>The 6 things to name, every time</h2>
-      <div class="comp-row"><span class="tag t-state">state</span><span class="desc">All info the agent needs to decide, made approximately Markov. Ask: what does the agent see?</span></div>
-      <div class="comp-row"><span class="tag t-action">action</span><span class="desc">What the <b>agent</b> chooses, not what the environment/user does. Ask: who is the agent, and what can it do?</span></div>
-      <div class="comp-row"><span class="tag t-reward">reward</span><span class="desc">Scalar signal encoding the goal. Watch for reward hacking and short vs long term.</span></div>
-      <div class="comp-row"><span class="tag t-trans">transition</span><span class="desc">P(s' | s, a). Usually unknown &rarr; model-free RL. Say whether it's known.</span></div>
-      <div class="comp-row"><span class="tag t-disc">discount / horizon</span><span class="desc">Episodic or continuing? What does &gamma; encode here (greedy vs long-term)?</span></div>
-      <div class="comp-row"><span class="tag t-trap">the trap</span><span class="desc">The one conceptual error that separates a weak answer from a strong one.</span></div>
-    </div>
+      <div class="checklist">
+        <h2>The 6 things to name, every time</h2>
+        <div class="comp-row"><span class="tag t-state">state</span><span class="desc">The complete snapshot the agent uses to decide now, as a sufficient (Markov) summary of the past.</span></div>
+        <div class="comp-row"><span class="tag t-action">action</span><span class="desc">A choice the <b>agent</b> makes, not what happens to it or what the user does.</span></div>
+        <div class="comp-row"><span class="tag t-reward">reward</span><span class="desc">One number per step signalling how good the immediate outcome was; you maximize its sum.</span></div>
+        <div class="comp-row"><span class="tag t-trans">transition</span><span class="desc">P(s' | s, a): probability of the next state given this state and action. Known &rarr; plan; unknown &rarr; learn.</span></div>
+        <div class="comp-row"><span class="tag t-disc">discount / horizon</span><span class="desc">&gamma; weighs future vs now; episodic (ends) or continuing (forever)?</span></div>
+        <div class="comp-row"><span class="tag t-trap">the trap</span><span class="desc">The one conceptual error that separates a weak answer from a strong one. <a href="#" id="learnLink">New to this? Read Learn first.</a></span></div>
+      </div>
 
-    <!-- Filter chips are generated from the data by js/app.js -->
-    <div class="filters" id="filters"></div>
-
-    <!-- Problem cards are rendered here -->
-    <div id="cards"></div>
+      <div class="filters" id="filters"></div>
+      <div id="cards"></div>
+    </section>
 
     <footer>attempt first, reveal second. progress saves in this browser only. &middot; <a href="https://github.com/ritikeshvali/mdp-drill" rel="noopener">source</a></footer>
   </div>
 
   <!-- Data first, then the app that consumes it -->
-  <script src="data/problems.js"></script>
-  <script src="js/app.js"></script>
+  <script src="data/problems.js?v=3"></script>
+  <script src="js/app.js?v=3"></script>
 </body>
 </html>

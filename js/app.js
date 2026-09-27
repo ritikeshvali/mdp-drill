@@ -1,5 +1,5 @@
 /* ============================================================================
- *  MDP FRAMING DRILL
+ *  MDP FRAMING DRILL — APP LOGIC
  *
  *  Reads window.MDP_PROBLEMS (data/problems.js) and renders the drill.
  *  Filter chips are built from the values present in the data.
@@ -396,4 +396,48 @@
   buildFilters();
   render();
   updateBar();
+})();
+
+/* ============================================================================
+ *  LEARN / DRILL TABS + LEARN-CARD EXAMPLE TOGGLES
+ *  Kept in its own IIFE so it's independent of the drill logic above.
+ * ========================================================================== */
+(function () {
+  "use strict";
+  var TAB_KEY = "mdp_tab";
+  var tabs = Array.prototype.slice.call(document.querySelectorAll(".tab"));
+  var panels = { learn: document.getElementById("learn"), drill: document.getElementById("drill") };
+  if (!tabs.length || !panels.learn || !panels.drill) return;
+
+  function showTab(name) {
+    if (!panels[name]) name = "learn";
+    Object.keys(panels).forEach(function (k) { panels[k].classList.toggle("show", k === name); });
+    tabs.forEach(function (t) { t.setAttribute("aria-selected", String(t.dataset.tab === name)); });
+    try { localStorage.setItem(TAB_KEY, name); } catch (e) {}
+  }
+
+  // first visit -> Learn; afterwards -> last tab used
+  var start = "learn";
+  try { start = localStorage.getItem(TAB_KEY) || "learn"; } catch (e) {}
+  showTab(start);
+
+  tabs.forEach(function (t) {
+    t.addEventListener("click", function () { showTab(t.dataset.tab); window.scrollTo({ top: 0, behavior: "smooth" }); });
+  });
+
+  var toDrill = document.getElementById("toDrill");
+  if (toDrill) toDrill.addEventListener("click", function () { showTab("drill"); window.scrollTo({ top: 0, behavior: "smooth" }); });
+
+  var learnLink = document.getElementById("learnLink");
+  if (learnLink) learnLink.addEventListener("click", function (e) { e.preventDefault(); showTab("learn"); window.scrollTo({ top: 0, behavior: "smooth" }); });
+
+  // example toggles inside the Learn checklist card
+  panels.learn.addEventListener("click", function (e) {
+    var b = e.target.closest(".ex-btn");
+    if (!b) return;
+    var comp = b.closest(".learn-comp");
+    var ex = b.dataset.ex;
+    comp.querySelectorAll(".ex-btn").forEach(function (x) { x.setAttribute("aria-pressed", String(x === b)); });
+    comp.querySelectorAll(".ex").forEach(function (x) { x.classList.toggle("show", x.classList.contains("ex-" + ex)); });
+  });
 })();
